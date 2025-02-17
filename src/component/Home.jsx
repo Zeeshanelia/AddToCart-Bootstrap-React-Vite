@@ -28,7 +28,7 @@ const Home = ({ setProductId }) => {
                 </div>
                 <div className="px-2">
                   <p className="m-0">
-                    <span className="font-bold">₹</span> {product?.price}
+                    <span className="font-bold">Rs :</span> {product?.price}
                   </p>
                   <p className="m-0 text-hiding">{product?.space}</p>
                 </div>

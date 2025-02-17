@@ -1,8 +1,6 @@
 import React from "react";
 
 const Cart = ({ cartAllProduct, setCartAllProduct }) => {
-  console.log("cartAllProduct", cartAllProduct);
-
   const handleIncrement = (id) => {
     setCartAllProduct((prevCart) =>
       prevCart.map((item) =>
@@ -10,6 +8,7 @@ const Cart = ({ cartAllProduct, setCartAllProduct }) => {
       )
     );
   };
+
   const handleDecrement = (id) => {
     setCartAllProduct((prevCart) =>
       prevCart.map((item) =>
@@ -19,6 +18,7 @@ const Cart = ({ cartAllProduct, setCartAllProduct }) => {
       )
     );
   };
+
   const handleDeleteItem = (id) => {
     const filteredItem = cartAllProduct?.filter((item) => item?.id !== id);
     setCartAllProduct(filteredItem);
@@ -27,67 +27,78 @@ const Cart = ({ cartAllProduct, setCartAllProduct }) => {
   return (
     <div className="container-fluid">
       <div className="row p-3 gap-3">
-        {cartAllProduct?.map((product) => {
-          return (
+        {cartAllProduct?.length > 0 ? (
+          cartAllProduct.map((product) => (
             <div
-              className="col-12 col-sm-6 col-md-4 col-lg-3 border rounded d-flex gap-3 p-2"
+              className="col-12 col-sm-6 col-md-4 col-lg-3 border rounded d-flex flex-column p-3"
               key={product?.id}
+              style={{
+                backgroundColor: "#f9f9f9",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
             >
-              <div className="p-1">
+              <div className="p-2 d-flex justify-content-center">
                 <img
                   src={product?.img}
                   alt={product?.model}
-                  className="cart-product-size img-fluid"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: "200px", // Ensure the image doesn't become too large
+                    objectFit: "contain",
+                  }}
                 />
               </div>
-              <div className="p-1 d-flex flex-column gap-2">
-                <div>
-                  <h3 className="text-hiding m-0">
-                    {product?.model?.toUpperCase()}
-                  </h3>
-                  <p className="m-0 fs-5">
-                    <span className="font-bold">₹</span> {product?.price}
-                  </p>
-                  <p className="m-0 font-size-12 font-bold">{product?.space}</p>
-                  <p className="m-0 font-size-12 font-bold">
-                    {product?.camera}
-                  </p>
-                  <div className="d-flex gap-3 mt-1">
-                    <p
-                      className="m-0 border p-0 px-2 py-1 rounded pointer"
-                      onClick={() => handleDecrement(product?.id)}
-                    >
-                      -
-                    </p>
-                    <p className="m-0">{product?.count}</p>
-                    <p
-                      className="m-0 border p-0 px-2 py-1 rounded pointer"
-                      onClick={() => handleIncrement(product?.id)}
-                    >
-                      +
-                    </p>
-                  </div>
-                </div>
+              <div className="p-2 d-flex flex-column gap-2">
+                <h5 className="text-center text-truncate" style={{ fontSize: "1rem" }}>
+                  {product?.model?.toUpperCase()}
+                </h5>
+                <p className="text-center fs-6">
+                  <span className="fw-bold">RS:</span> {product?.price}
+                </p>
+                <p className="m-0 text-center text-muted">{product?.space}</p>
+                <p className="m-0 text-center text-muted">{product?.camera}</p>
 
-                <div className="d-flex justify-content-between align-items-center mt-2">
-                  <p className="m-0 text-truncate" style={{ maxWidth: "80%" }}>
-                    {product?.description}
-                  </p>
-                  <p
-                    className="m-0"
-                    onClick={() => handleDeleteItem(product?.id)}
+                <div className="d-flex justify-content-center gap-2 mt-2">
+                  <button
+                    className="btn btn-outline-secondary btn-sm"
+                    onClick={() => handleDecrement(product?.id)}
+                    style={{ padding: "5px 10px" }}
                   >
-                    <i className="fa-solid fa-trash text-danger pointer"></i>
-                  </p>
+                    -
+                  </button>
+                  <p className="m-0" style={{ fontSize: "1.2rem" }}>{product?.count}</p>
+                  <button
+                    className="btn btn-outline-secondary btn-sm"
+                    onClick={() => handleIncrement(product?.id)}
+                    style={{ padding: "5px 10px" }}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-            </div>
-          );
-        })}
 
-        {cartAllProduct.length === 0 && (
+              <div className="d-flex justify-content-between align-items-center mt-2">
+                <p
+                  className="m-0 text-truncate"
+                  style={{
+                    maxWidth: "70%",
+                    fontSize: "0.85rem", // Make the description text smaller
+                  }}
+                >
+                  {product?.description}
+                </p>
+                <button
+                  className="btn btn-link text-danger p-0"
+                  onClick={() => handleDeleteItem(product?.id)}
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
           <div className="col-12">
-            <h1 className="text-center fs-3">No Products Available in Cart</h1>
+            <h3 className="text-center">No Products Available in Cart</h3>
           </div>
         )}
       </div>
